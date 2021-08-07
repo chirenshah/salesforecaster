@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="{{url_for('static', filename='logo.png')}}" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" type="text/css" href="../static/predictionHTML.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction</title>
+</head>
+<body>
+    <header>
+            <div class="row">
+                <img src="{{ url_for('static', filename = 'logo.png') }}" alt="logo" class="logo">
+                <h1> Predictive Analysis</h1>
+             </div>
+        <div id="panel-container">
+            <div id="left-panel">
+                <p>R^2 score of the model is {{r2_score}}</p>
+                <p>The most common interpretation of r-squared is how well the regression model fits the observed data.
+                For example, an r-squared of 60% reveals that 60% of the data fit the regression model.
+                Generally, a higher r-squared indicates a better fit for the model.</p><br>
+                <p>MSE value of the model is {{mse}}</p>
+                <p> It indicates the absolute fit of the model to the data–how close the observed data points are to the model’s predicted values.
+                Whereas R-squared is a relative measure of fit, RMSE is an absolute measure of fit.
+                Lower values of RMSE indicate better fit. RMSE is a good measure of how accurately the model predicts the response, and it is the most important criterion for fit if the main purpose of the model is prediction.</p>
+            </div> 
+            <div id="graph">
+                <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+                <script>
+                    var graphs = {{plot | safe}};
+                    Plotly.plot('graph',graphs,{});
+                </script>
+            </div>
+        </div>
+    </header>
+    <div id="forecast-container">
+        <h1>Enter Attributes to Forecast {{Target}} value</h1>
+        <form id="form">
+        <div id="forecast">
+            
+            {% for item in columns %}
+            <div>
+            <p>{{item}}</p><input type="text" name={{item}} id={{item}}></div>
+            {% endfor %}
+        </div>
+        <p id="answer"></p>
+        <input type="button" id="forecast-submit" value="Forecast!">
+        </form>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+    <script>
+         document.getElementById('forecast-submit').onclick = function(){
+            var form_data = new FormData(document.querySelector('#form'));
+            console.log(form_data);
+            $.ajax({
+                    type: 'POST',
+                    url: '/forecast_regression',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        console.log(data);
+                        document.getElementById("answer").innerHTML = "{{Target}} is " + data;
+                    },
+                });
+            }
+    </script>
+</body>
+</html>

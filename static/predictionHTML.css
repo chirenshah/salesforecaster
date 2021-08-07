@@ -1,0 +1,103 @@
+header{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.999)),url('./9.jpeg');
+    background-size:2000px 1200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    color: white;
+    font-size:20px;
+    margin: 0px;
+    text-align: center;
+    font-weight: 300;
+}
+
+body{
+    margin:0px;
+}
+
+header img {
+    margin-bottom: 10%;
+}
+
+header p {
+    margin: 2%;
+}
+
+h1{
+    margin: 0px;
+    color: white;
+    font-size: 3.5em;
+    word-spacing: 4px;
+    font-weight: 600;
+    text-align: center;
+    font-family: Verdana;
+    margin-right: 10%;
+    position: relative;
+    padding: 30px;
+}
+.logo{
+    height: 140px;
+    float: left;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+
+#forecast{
+    display: flex;
+    flex-flow: column wrap;
+    height: 400px;
+    color: #0072B1;
+    font-weight: 700;
+}
+
+#forecast input[type = "text"]{
+    border-radius: 5px;
+    border: none;
+    background-color: #0072B1;
+    color: white;
+    font-size: x-large;
+    width: 500px;
+    padding:2% 3%;
+}
+
+#forecast div{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#form input[type = "button"]{
+    margin: 20px auto;
+    display: block;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    background-color: #0072B1;
+    border: none;
+}
+
+#answer{
+    text-align: center;
+    color: #0072B1;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#forecast-container h1{
+    color: #0072B1;
+}
+
+#panel-container{
+    display:flex;
+    margin: 10% 5%;
+    width: 90%;
+    text-align: justify;
+}
+
+#left-panel{
+    width:100%;
+    padding: 3%;
+    font-size: 21px;
+    background-color:#0001;
+
+}

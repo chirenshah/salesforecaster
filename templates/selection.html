@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="{{url_for('static', filename='logo.png')}}" type="image/gif" sizes="16x16">  
+    <link rel="stylesheet" type="text/css" href="../static/SelectionHTML.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection</title>
+</head>
+<body >
+    <header>
+
+                <div class="row">
+                <h1> Select the Attributes</h1>
+             </div>
+    <form method="post" class="form">
+        <select name="target" id="target">
+            <option value="none">
+                Select Target attribute
+            </option>
+            {% for item in columns %}
+            <option value={{item}}>{{item}}</option>
+            {% endfor %}
+        </select>
+        <select name="time" id="time">
+            <option value="none">
+                Select Time attribute
+            </option>
+            {% for item in columns %}
+            <option value={{item}}>{{item}}</option>
+            {% endfor %}
+        </select><br>
+        <input type="button" id="mode" value="Select Mode">
+        <select name="flag" id="flag" style="display: none;">
+            <option value="Time Series">Time Series</option>
+            <option value="Regression">Regression</option>
+        </select>
+        <div id='format'>
+          <div id="format-content">
+            <br>
+            <label for="format">Enter the Format For Date attribute</label><br><br>
+            <input type="text" name="format" id="format">
+            <div class="arrow-container">
+              <div class="arrow-down"></div>
+            </div>
+            <div id="boxed-content">
+              <ul>
+                <li>If the date attribute contains just <b>Years</b> enter '%Y' similarly %m and %d</li>
+                <li>If the date attribute contains <b>dd/mm/yyyy</b> enter '%d/%m/%Y'</li>
+                <li>If the date attribute name of the month like <b>21 jan 2021</b> enter '%d %b %Y'</li>
+                <li>If the date attribute name of the month like <b>21 jan 2021</b> enter '%d %b %Y'</li>
+              </ul>
+            </div>
+          </div>
+          </div>
+        <br><br> 
+        <div class="modal-container" id="modal-container">
+        <div class="modal" id="modal">
+            <div class="overflow">
+                <section class="panels">
+                  <article class="panels__side panels__side--left">
+                    <div class="panels__side panels__side--inner-left">
+                      <div id="list">
+                        <p>
+                          When to Opt for Time Series
+                          <ul>
+                          <li>When your sales is of Periodic Nature. Time Series identifies trends and patterns in given dataset</li>
+                          <li>When you want acute , comparatively more accurate predictions</li>
+                          <li>When you have a dataset (> 2000 entries)</li>
+                        </ul></p>
+                        <input type="button" id="time-series" value="Choose Time Series">
+                      </div>
+                    </div>
+                    <div class="panels__side panels__side--inner">
+                      <div>
+                        <h1 class="panels__headline">Time Series</h1>
+                        <div class="description"><p>Time series forecasting is a technique for the prediction of events through a sequence of time.
+                          The techniques predict future events by analyzing the trends and periodicity of the past, on the assumption that
+                          future trends will hold similar to historical trends.</p></div>      
+                        <svg class="arrow arrow--left" width="40" height="40" viewBox="0 0 24 24"><path d="M0 0h24v24h-24z" fill="none"/><path d="M20 11h-12.17l5.59-5.59-1.42-1.41-8 8 8 8 1.41-1.41-5.58-5.59h12.17v-2z"/></svg>
+                      </div>
+                  </div>
+                  </article>
+                  <article class="panels__side panels__side--right">
+                    <div class="panels__side panels__side--inner">
+                      <div>
+                      <h1 class="panels__headline">Regression</h1>
+                      <div class="description"><p>Regression takes a group of random variables, thought to be predicting Y,
+                        and tries to find a mathematical relationship between them. 
+                        This relationship is typically in the form of a straight line
+                        that best approximates all the individual data points</p></div>
+                      <svg class="arrow arrow--right" width="40" height="40" viewBox="0 0 24 24"><path d="M0 0h24v24h-24z" fill="none"/><path d="M12 4l-1.41 1.41 5.58 5.59h-12.17v2h12.17l-5.58 5.59 1.41 1.41 8-8z"/></svg>
+                    </div>
+                    </div>
+                    <div class="panels__side panels__side--inner-right">
+                      <div id="list">
+                        <p>
+                          When to Opt for Regression
+                          <ul>
+                          <li>When you need to find correlation between different attributes and their overall effect on Sales</li>
+                          <li>When you want long term, Generalised predictions</li>
+                          <li>When you have a smaller dataset (< 2000 entries)</li>
+                        </ul></p>
+                        <input type="button" id="regression" value="Choose Regression" style="color: black;">
+                      </div>
+                    </div>
+                  </article>
+                </section>
+              </div>
+            </div>
+        </div>     
+        <button type="button" id="submit">Submit</button>
+        <div id="container">
+            <p> Please scroll to check our analysis of your dataset while we generate forecasts for you</p>
+            <div class="container">
+                <div class="progress-container">
+                  <div class="progress" id="progress"> </div>
+                  <div class="circle active">25%</div>
+                  <div class="circle">50%</div>
+                  <div class="circle">75%</div>
+                  <div class="circle">100%</div>
+                </div>
+                <p id="text">Cleaning the Dataset</p>
+              </div>
+            </div>
+    </form>
+     
+        <br>
+        <form action="/resultsRegression" method="post">
+            <button type="submit" id="continue_regression" class="continue" style="display: none;">Continue</button>
+        </form>
+        <form action="/resultsTimeSeries" method="post">
+          <button type="submit" id="continue_time_series" class="continue" style="display: none;">Continue</button>
+      </form>
+    </header>
+    <iframe src="./edaDisplay" frameborder="0" style="height: 90vh;" width="100%"></iframe>
+</body>
+<script src="https://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+<script>
+  var modal = document.getElementById('modal-container');
+  document.getElementById('time-series').onclick = function(){
+    document.getElementById('flag').selectedIndex  = '0';
+    document.getElementById('mode').value = 'Time Series';
+    document.getElementById('format').style.display = 'block';
+    modal.style.display = "none";
+  }
+  document.getElementById('regression').onclick = function(){
+    document.getElementById('flag').selectedIndex  = '1';
+    document.getElementById('mode').value = 'Regression';
+    document.getElementById('format').style.display = 'block';
+    modal.style.display = "none";
+  }
+        document.getElementById('submit').onclick = function(){
+            var form_data = new FormData(document.querySelector('.form'));
+            $.ajax({
+                                type: 'POST',
+                                url: '/getAttributes',
+                                data: form_data,
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                success: function(data) {
+                                },
+                            });
+                            statusChecker();
+            document.getElementById("submit").style.display =  "none";
+            document.getElementById("container").style.display = "block";
+        }
+        function statusChecker(){
+            var i  = 0;
+            var something = setInterval(function(){
+                $.ajax({
+                            type: 'POST',
+                            url: '/Predictionstatus',
+                            data: {"chiren":"shah"},
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function(data) {
+                                if(i < 100)i = i + Math.floor(Math.random() * 5);
+                                update(parseInt(data),i);
+                                if(data == "4"){
+                                  if(document.getElementById("mode").value == 'Regression'){
+                                    document.getElementById("continue_regression").style.display =  "block";
+                                  }
+                                  else{
+                                    document.getElementById("continue_time_series").style.display =  "block";
+                                  }
+                                    document.getElementById("container").style.display = "none";
+                                    clearInterval(something);
+                                }
+                                if(data == "5"){
+                                    clearInterval(something);
+                                }
+                            },
+                        });
+                }, 5000);
+        }
+        var Panels = (function() {
+  
+  var panelLeft = document.querySelector('.panels__side--left');
+  var panelRight = document.querySelector('.panels__side--right');
+
+  var openLeft = function() {
+		panelLeft.classList.toggle('panels__side--left-active');
+    panelRight.classList.toggle('panels__side--right-hidden');
+  };
+
+  var openRight = function() {
+    panelRight.classList.toggle('panels__side--right-active');
+    panelLeft.classList.toggle('panels__side--left-hidden');
+  };
+  
+  var bindActions = function() {
+    panelLeft.addEventListener('click', openLeft, false);
+    panelRight.addEventListener('click', openRight, false);
+  };
+  
+  var init = function() {
+    bindActions();
+  };
+  
+  return {
+    init: init
+  };
+ 
+}());
+
+Panels.init();
+</script>
+<script>
+    document.getElementById('mode').onclick = function(){
+        document.getElementById('modal-container').style.display = "block";
+    }
+    var modal = document.getElementById('modal-container');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+format = document.getElementById('format');
+window.onclick = function(event) {
+  if (event.target == format) {
+    format.style.display = "none";
+  }
+}
+
+document.getElementsByClassName('arrow-container')[0].onclick = function(){
+  format.style.display = 'none';
+}
+</script>
+<script>
+    const progress = document.getElementById("progress");
+const stepCircles = document.querySelectorAll(".circle");
+let currentActive = 1;
+
+//NOTE CHANGE HERE TO 1-4
+//1=25%
+//2=50%
+//3=75%
+//4=100%
+function update(currentActive , i) {
+    var textElement = document.getElementById('text');
+    if(currentActive == "2"){
+        textElement.innerHTML = "Training Datamodels.... " + i + "%";
+    }
+    if(currentActive == "3"){
+        textElement.innerHTML = "Generating Graphs";
+    }
+    if(currentActive == "5"){
+        textElement.innerHTML = "There is some error please refresh the page and try again ";
+        //clearInterval(something);
+    }
+  stepCircles.forEach((circle, i) => {
+    if (i < currentActive) {
+      circle.classList.add("active");
+    } else {
+      circle.classList.remove("active");
+    }
+  });
+
+  const activeCircles = document.querySelectorAll(".active");
+  progress.style.width =
+    ((activeCircles.length - 1) / (stepCircles.length - 1)) * 100 + "%";
+
+}
+</script>
+</html>
